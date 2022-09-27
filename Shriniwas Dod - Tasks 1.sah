@@ -1,0 +1,70 @@
+//#################################################################################################
+//## Date Created:                  27th September 2022                                                                         
+//#################################################################################################
+
+//###########################################
+//Scenario 1: Users are able to search for an item using the search bar
+
+//Navigate to the homepage
+_windowAction("maximize");
+_navigateTo("http://automationpractice.com/index.php", true);
+
+//Put any search term in the search bar
+_wait(30000,_isVisible(_textbox("setupSearch")));
+_setValue(_textbox("search_query"), "Faded Short Sleeve T-shirts");
+_wait(3000);
+_click(_submit("Search"));
+
+//Validate that the results returned matches the search term
+ _wait(20000,_isVisible(_image("Faded Short Sleeve T-shirts")));
+_setStrictVisibilityCheck(true);
+_assertVisible(_heading1("Search \"Faded Short Sleeve T-shirts\" 1 result has been found."));
+_assertVisible(_image("Faded Short Sleeve T-shirts"));
+_setStrictVisibilityCheck(false);
+
+//###########################################################
+//Scenario 2: Users are able to filter search results under Women category by Color and Category
+
+//Navigate to the homepage
+_wait(3000);
+_click(_link("Return to Home"));
+
+//Click on Women category
+_wait(20000,_isVisible(_link("Women")));
+_click(_link("Women"));
+
+// Select any value from the `Color` and `Category` filter item
+_wait(20000,_isVisible(_button("/White /"),_rightOf(_link("/White /"))));
+_check(_button("/White /"),_rightOf(_link("/White /")));
+_wait(30000,!_isVisible(_image("/loader.gif/")));
+_check(_checkbox("checkbox"),_near(_link("/Tops /")));
+_wait(30000,!_isVisible(_image("/loader.gif/")));
+
+// Validate that the results returned matches the filter criteria
+_setStrictVisibilityCheck(true);
+_assertVisible(_div("Enabled filters: Categories: Tops Color: White"));
+_assertEqual("Women > Categories Tops > Color White", _getText(_span("Women > Categories Tops > Color White")));
+_setStrictVisibilityCheck(false);
+
+//#########################################################################
+//Scenario 3: Users are able to view the details of any clothing item from the POPULAR section and add them to the cart	
+
+//Navigate to the homepage
+_wait(30000,_isVisible(_link("Return to Home")));
+_click(_link("Return to Home"));
+
+//Select any item from from the `POPULAR` section and add them to the cart
+
+//Validate that the item has successfully been added to the cart
+_wait(20000,_isVisible(_link("Blouse")));
+_click(_link("Blouse"));
+_wait(20000,_isVisible(_submit("Add to cart")));
+_click(_submit("Add to cart"));
+_wait(20000,_isVisible(_heading2("Product successfully added to your shopping cart")));
+
+_setStrictVisibilityCheck(true);
+_assertVisible(_heading2("Product successfully added to your shopping cart"));
+_assertVisible(_div("/Product successfully added to your shopping cart Blouse Black/"));
+_setStrictVisibilityCheck(false);
+
+//################################################################################
